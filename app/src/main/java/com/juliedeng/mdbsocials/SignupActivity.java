@@ -1,7 +1,21 @@
 package com.juliedeng.mdbsocials;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Created by juliedeng on 2/18/18.
@@ -9,10 +23,61 @@ import android.support.v7.app.AppCompatActivity;
 
 public class SignupActivity extends AppCompatActivity {
 
+    private EditText signup_email, signup_password;
+    private TextView login_link;
+    private Button signup_button;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private final static String TAG = "SignupActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        signup_email = findViewById(R.id.signup_email);
+        signup_password = findViewById(R.id.login_password);
+        signup_button = findViewById(R.id.signup_button);
+        login_link = findViewById(R.id.login_link);
+        mAuth = FirebaseAuth.getInstance();
+        signup_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attemptSignup();
+            }
+        });
+        login_link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(SignupActivity.this, LoginActivity.class);
+                startActivity(i);
+            }
+        });
+    }
+
+    private void attemptSignup() {
+        String email = signup_email.getText().toString();
+        if (email.length() < 6) {
+            Toast.makeText(SignupActivity.this, "Passwords must be longer than 6 characters.",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String password = signup_password.getText().toString();
+
+        if (!email.equals("") && !password.equals("")) {
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+                            if (!task.isSuccessful()) {
+//                                check toast message
+                                Toast.makeText(SignupActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                            } else {
+                                startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                            }
+                        }
+                    });
+        }
     }
 }
