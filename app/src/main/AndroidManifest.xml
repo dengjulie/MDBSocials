@@ -33,7 +33,7 @@
             android:name=".SignupActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".DetailActivity" />
-        <!--<activity android:name=".AddSocialActivity"></activity>-->
+        <activity android:name=".AddSocialActivity"></activity>
     </application>
 
 </manifest>
