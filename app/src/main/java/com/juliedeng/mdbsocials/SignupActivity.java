@@ -36,7 +36,7 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         signup_email = findViewById(R.id.signup_email);
-        signup_password = findViewById(R.id.login_password);
+        signup_password = findViewById(R.id.signup_password);
         signup_button = findViewById(R.id.signup_button);
         login_link = findViewById(R.id.login_link);
         mAuth = FirebaseAuth.getInstance();
@@ -56,15 +56,30 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void attemptSignup() {
+        Log.d(TAG, "enter  func");
+        if (signup_email.getText().length() == 0) {
+            Toast.makeText(SignupActivity.this, "Input an email.",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (signup_password.getText().length() == 0) {
+            Toast.makeText(SignupActivity.this, "Input a password.",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         String email = signup_email.getText().toString();
-        if (email.length() < 6) {
+        String password = signup_password.getText().toString();
+        if (password.length() < 6) {
+            Log.d(TAG, "enter  bad pw check");
             Toast.makeText(SignupActivity.this, "Passwords must be longer than 6 characters.",
                     Toast.LENGTH_SHORT).show();
             return;
         }
-        String password = signup_password.getText().toString();
 
+        Log.d(TAG, "pass bad pw check");
         if (!email.equals("") && !password.equals("")) {
+
+            Log.d(TAG, "enter  if statement");
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override

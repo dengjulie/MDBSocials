@@ -3,9 +3,11 @@ package com.juliedeng.mdbsocials;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -63,6 +65,11 @@ public class LoginActivity extends AppCompatActivity {
         forgot_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (login_email.getText().length() == 0) {
+                    Toast.makeText(LoginActivity.this, "Input an email.",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 mAuth.sendPasswordResetEmail(login_email.getText().toString())
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -71,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.makeText(LoginActivity.this, "Email sent.",
                                             Toast.LENGTH_SHORT).show();
                                 } else {
+//                                    need better error message
                                     Toast.makeText(LoginActivity.this, "Failed to send. Make sure you have inputted a valid email.",
                                             Toast.LENGTH_SHORT).show();
                                 }
@@ -83,6 +91,32 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(LoginActivity.this, SignupActivity.class);
                 startActivity(i);
+            }
+        });
+        ConstraintLayout layout=(ConstraintLayout)findViewById(R.id.background);
+        layout.setOnClickListener(new View.OnClickListener() {
+//            this doesnt do shit :(
+            @Override
+            public void onClick(View v){
+                login_email.clearFocus();
+                login_password.clearFocus();
+                findViewById(R.id.background).requestFocus();
+            }
+        });
+        login_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+        login_password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
             }
         });
     }
@@ -131,7 +165,6 @@ public class LoginActivity extends AppCompatActivity {
         if (currentUser != null) {
             mAuth.addAuthStateListener(mAuthListener);
         }
-
     }
 
     @Override
@@ -141,4 +174,10 @@ public class LoginActivity extends AppCompatActivity {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(LoginActivity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
 }
