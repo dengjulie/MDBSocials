@@ -1,11 +1,13 @@
 package com.juliedeng.mdbsocials;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,7 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private EditText signup_email, signup_password;
+    private EditText signup_email, signup_password, signup_confirmpassword;
     private TextView login_link;
     private Button signup_button;
     private FirebaseAuth mAuth;
@@ -37,9 +39,19 @@ public class SignupActivity extends AppCompatActivity {
 
         signup_email = findViewById(R.id.signup_email);
         signup_password = findViewById(R.id.signup_password);
+        signup_confirmpassword = findViewById(R.id.signup_confirmpassword);
         signup_button = findViewById(R.id.signup_button);
         login_link = findViewById(R.id.login_link);
         mAuth = FirebaseAuth.getInstance();
+        View.OnFocusChangeListener keyboardHider = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        };
+
         signup_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,6 +65,11 @@ public class SignupActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        signup_email.setOnFocusChangeListener(keyboardHider);
+        signup_password.setOnFocusChangeListener(keyboardHider);
+        signup_button.setOnFocusChangeListener(keyboardHider);
+        signup_confirmpassword.setOnFocusChangeListener(keyboardHider);
+
     }
 
     private void attemptSignup() {
@@ -94,5 +111,10 @@ public class SignupActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
