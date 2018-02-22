@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -109,13 +110,11 @@ public class AddSocialActivity extends AppCompatActivity {
     }
 
     public void submit() {
-        Log.d("SUBMIT", "begin submit");
         ref = FirebaseDatabase.getInstance().getReference();
 
         final String key = ref.child("socials").push().getKey();
         storageRef = FirebaseStorage.getInstance().getReferenceFromUrl("gs://mdbsocials-ecfac.appspot.com");
         StorageReference socialsRef = storageRef.child(key + ".png");
-        Log.d("SUBMIT", "attempt put file");
 
         if (selectedImageUri == null) {
             Log.d("SUBMIT", "image null");
@@ -128,19 +127,16 @@ public class AddSocialActivity extends AppCompatActivity {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.d("SUBMIT", "begin successlistener");
                 String name = new_name.getText().toString();
                 String date = new_date.getText().toString();
                 String description = new_description.getText().toString();
                 String email  = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                String timestamp = "" + ServerValue.TIMESTAMP;
                 ArrayList<String> peopleInterested = new ArrayList<>();
-                Log.d("SUBMIT", "right before downloadurl");
                 String imageURL = taskSnapshot.getDownloadUrl().toString();
-                Log.d("SUBMIT", "after downloadurl");
 
-                Social social = new Social(name, description, email, imageURL, date, peopleInterested);
+                Social social = new Social(name, description, email, imageURL, timestamp, date, peopleInterested);
                 ref.child("socials").child(key).setValue(social);
-                Log.d("SUBMIT", "successfully put in databse");
                 startActivity(new Intent(AddSocialActivity.this, MainActivity.class));
             }
         });

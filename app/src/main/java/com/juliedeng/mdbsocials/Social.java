@@ -10,8 +10,7 @@ import java.util.ArrayList;
  */
 
 public class Social implements Serializable {
-    String name, description, email, imageURL;
-    Object timestamp;
+    String name, description, email, imageURL, timestamp, date;
     int numInterested;
     ArrayList<String> peopleInterested;
 
@@ -21,16 +20,18 @@ public class Social implements Serializable {
         this.email = null;
         this.imageURL = null;
         this.timestamp = null;
+        this.date = null;
         this.numInterested = 0;
         this.peopleInterested = null;
     }
 
-    public Social(String name, String description, String email, String imageURL, Object timestamp, ArrayList<String> peopleInterested) {
+    public Social(String name, String description, String email, String imageURL, String timestamp, String date, ArrayList<String> peopleInterested) {
         this.name = name;
         this.description = description;
         this.email = email;
         this.imageURL = imageURL;
         this.timestamp = timestamp;
+        this.date = date;
         this.numInterested = 1;
         this.peopleInterested = peopleInterested;
     }
@@ -53,6 +54,10 @@ public class Social implements Serializable {
 
     public Object getTimestamp() {
         return timestamp;
+    }
+
+    public String getDate() {
+        return date;
     }
 
     public int getNumInterested() {
