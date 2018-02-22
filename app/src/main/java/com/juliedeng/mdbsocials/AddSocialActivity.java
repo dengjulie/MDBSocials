@@ -27,6 +27,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AddSocialActivity extends AppCompatActivity {
 
@@ -131,11 +132,10 @@ public class AddSocialActivity extends AppCompatActivity {
                 String date = new_date.getText().toString();
                 String description = new_description.getText().toString();
                 String email  = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-                String timestamp = "" + ServerValue.TIMESTAMP;
-                ArrayList<String> peopleInterested = new ArrayList<>();
+                Long timestamp = (new Date()).getTime();
                 String imageURL = taskSnapshot.getDownloadUrl().toString();
 
-                Social social = new Social(name, description, email, imageURL, timestamp, date, peopleInterested);
+                Social social = new Social(name, description, email, imageURL, timestamp, date);
                 ref.child("socials").child(key).setValue(social);
                 startActivity(new Intent(AddSocialActivity.this, MainActivity.class));
             }

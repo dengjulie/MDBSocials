@@ -1,31 +1,34 @@
 package com.juliedeng.mdbsocials;
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 
 /**
  * Created by juliedeng on 2/20/18.
  */
 
-public class Social implements Serializable {
-    String name, description, email, imageURL, timestamp, date;
+public class Social implements Serializable, Comparable<Social> {
+    String name, description, email, imageURL, date;
     int numInterested;
-    ArrayList<String> peopleInterested;
+    long timestamp;
 
     public Social() {
         this.name = null;
         this.description = null;
         this.email = null;
         this.imageURL = null;
-        this.timestamp = null;
+        this.timestamp = 0;
         this.date = null;
         this.numInterested = 0;
-        this.peopleInterested = null;
     }
 
-    public Social(String name, String description, String email, String imageURL, String timestamp, String date, ArrayList<String> peopleInterested) {
+    public Social(String name, String description, String email, String imageURL, long timestamp, String date) {
         this.name = name;
         this.description = description;
         this.email = email;
@@ -33,7 +36,13 @@ public class Social implements Serializable {
         this.timestamp = timestamp;
         this.date = date;
         this.numInterested = 1;
-        this.peopleInterested = peopleInterested;
+    }
+    public int compareTo(Social anotherInstance) {
+        if (this.timestamp > anotherInstance.timestamp) {
+            return 1;
+        } else {
+            return -1;
+        }
     }
 
     public String getName() {
@@ -62,10 +71,6 @@ public class Social implements Serializable {
 
     public int getNumInterested() {
         return numInterested;
-    }
-
-    public ArrayList<String> getPeopleInterested() {
-        return peopleInterested;
     }
 
 }

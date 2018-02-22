@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity
                 for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) {
                     socials.add(dataSnapshot2.getValue(Social.class));
                 }
+                Collections.sort(socials, new SocialComparator());
                 adapter.notifyDataSetChanged();
             }
 
