@@ -35,7 +35,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHold
     public void onBindViewHolder(final CustomViewHolder holder, int position) {
         Social social = data.get(position);
         holder.event_name.setText(social.getName());
-        holder.num_interested.setText(social.getNumInterested());
+        holder.num_interested.setText(String.valueOf(social.getNumInterested()));
         holder.email.setText(social.getEmail());
         Glide.with(context).load(social.getImageURL()).into(holder.image);
     }

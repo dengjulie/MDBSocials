@@ -15,14 +15,10 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden">
-
-        </activity>
-
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="stateHidden">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,7 +29,7 @@
             android:name=".SignupActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".DetailActivity" />
-        <activity android:name=".AddSocialActivity"></activity>
+        <activity android:name=".AddSocialActivity" />
     </application>
 
 </manifest>
