@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity
 
     final ArrayList<Social> socials = new ArrayList<>();
     final ListAdapter adapter = new ListAdapter(this, socials);
-    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/socials");
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference ref = firebaseDatabase.getReference("/socials");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

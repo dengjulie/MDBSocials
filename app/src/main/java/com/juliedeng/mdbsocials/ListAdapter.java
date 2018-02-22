@@ -67,11 +67,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHold
                 @Override
                 public void onClick(View view) {
                     Intent i = new Intent(context, DetailActivity.class);
-                    i.putExtra("num_interested", num_interested.getText().toString());
+                    i.putExtra("event_name", event_name.getText().toString());
+                    i.putExtra("num_interested", num_interested.getText());
                     i.putExtra("email", email.getText());
-                    i.putExtra("event_name", event_name.getText());
-                    i.putExtra("event_name", event_name.getText());
-                    i.putExtra("event_name", event_name.getText());
+//                  pass in the description + image
                     context.startActivity(i);
                 }
             });

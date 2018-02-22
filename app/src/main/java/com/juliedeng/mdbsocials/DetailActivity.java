@@ -11,7 +11,7 @@ import android.widget.TextView;
 public class DetailActivity extends AppCompatActivity {
 
     Button back, interested;
-    TextView description, email, event_name, num_interested;
+    TextView description, mEmail, event_name, num_interested;
     ImageView image;
 
     @Override
@@ -22,7 +22,7 @@ public class DetailActivity extends AppCompatActivity {
         back = findViewById(R.id.back_button);
         interested = findViewById(R.id.interested);
         description = findViewById(R.id.description);
-        email = findViewById(R.id.email);
+        mEmail = findViewById(R.id.email);
         event_name = findViewById(R.id.event_name);
         num_interested = findViewById(R.id.num_interested);
         image = findViewById(R.id.image);
@@ -36,6 +36,10 @@ public class DetailActivity extends AppCompatActivity {
         });
 
         String name = getIntent().getStringExtra("event_name");
+        String email = getIntent().getStringExtra("email");
+        String number_interested = getIntent().getStringExtra("num_interested");
         event_name.setText(name);
+        mEmail.setText(email);
+        num_interested.setText(number_interested);
     }
 }
