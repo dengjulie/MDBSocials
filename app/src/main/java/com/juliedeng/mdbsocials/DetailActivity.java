@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 public class DetailActivity extends AppCompatActivity {
 
     Button back, interested;
@@ -38,8 +40,12 @@ public class DetailActivity extends AppCompatActivity {
         String name = getIntent().getStringExtra("event_name");
         String email = getIntent().getStringExtra("email");
         String number_interested = getIntent().getStringExtra("num_interested");
+        String event_description = getIntent().getStringExtra("description");
+        String imageURL = getIntent().getStringExtra("imageURL");
         event_name.setText(name);
         mEmail.setText(email);
         num_interested.setText(number_interested);
+        description.setText(event_description);
+        Glide.with(getApplicationContext()).load(imageURL).into(image);
     }
 }

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHolder> {
     private Context context;
     private ArrayList<Social> socials;
+    String name, creator_email, number_interested, imageURL, event_description;
 
     public ListAdapter(Context context, ArrayList<Social> socials) {
         this.context = context;
@@ -36,10 +37,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHold
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, int position) {
         Social social = socials.get(position);
-        holder.event_name.setText(social.getName());
-        holder.num_interested.setText(String.valueOf(social.getNumInterested()));
-        holder.email.setText(social.getEmail());
-        Glide.with(context).load(social.getImageURL()).into(holder.image);
+        name = social.getName();
+        creator_email = social.getEmail();
+        number_interested = String.valueOf(social.getNumInterested());
+        imageURL = social.getImageURL();
+        event_description = social.getDescription();
+
+        holder.event_name.setText(name);
+        holder.email.setText(creator_email);
+        holder.num_interested.setText(String.valueOf(number_interested));
+        Glide.with(context).load(imageURL).into(holder.image);
         holder.bind(socials.get(position));
     }
 
@@ -67,10 +74,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHold
                 @Override
                 public void onClick(View view) {
                     Intent i = new Intent(context, DetailActivity.class);
-                    i.putExtra("event_name", event_name.getText().toString());
-                    i.putExtra("num_interested", num_interested.getText());
-                    i.putExtra("email", email.getText());
-//                  pass in the description + image
+                    i.putExtra("event_name", name);
+                    i.putExtra("num_interested", number_interested);
+                    i.putExtra("email", creator_email);
+                    i.putExtra("description", event_description);
+                    i.putExtra("imageURL", imageURL);
                     context.startActivity(i);
                 }
             });
