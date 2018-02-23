@@ -2,6 +2,7 @@ package com.juliedeng.mdbsocials;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -41,6 +42,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHold
         holder.num_interested.setText(String.valueOf(social.getNumInterested())+ " interested!");
         holder.email.setText(social.getEmail());
         Glide.with(context).load(social.getImageURL()).into(holder.image);
+        if (position %2 ==0) {
+            holder.card.setBackgroundColor(Color.parseColor("#ff69b4"));
+        }
         holder.bind(socials.get(position));
     }
 
