@@ -16,7 +16,7 @@ import java.util.Set;
  */
 
 public class Social implements Serializable, Comparable<Social> {
-    String name, description, email, imageURL, date;
+    String name, description, email, imageURL, date, firebaseKey;
     int numInterested;
     long timestamp;
     ArrayList<String> interestedEmails;
@@ -30,9 +30,10 @@ public class Social implements Serializable, Comparable<Social> {
         this.date = null;
         this.numInterested = 0;
         interestedEmails = null;
+        this.firebaseKey = null;
     }
 
-    public Social(String name, String description, String email, String imageURL, long timestamp, String date) {
+    public Social(String name, String description, String email, String imageURL, long timestamp, String date, String firebaseKey) {
         this.name = name;
         this.description = description;
         this.email = email;
@@ -41,7 +42,8 @@ public class Social implements Serializable, Comparable<Social> {
         this.date = date;
         this.numInterested = 1;
         this.interestedEmails = new ArrayList<>();
-        this.interestedEmails.add(name);
+        this.interestedEmails.add(email);
+        this.firebaseKey = firebaseKey;
     }
     public int compareTo(Social anotherInstance) {
         if (this.timestamp > anotherInstance.timestamp) {
@@ -79,4 +81,11 @@ public class Social implements Serializable, Comparable<Social> {
         return numInterested;
     }
 
+    public String getFirebaseKey() {
+        return firebaseKey;
+    }
+
+    public ArrayList<String> getInterestedEmails() {
+        return interestedEmails;
+    }
 }

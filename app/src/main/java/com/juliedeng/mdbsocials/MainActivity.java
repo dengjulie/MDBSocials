@@ -31,9 +31,12 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     final ArrayList<Social> socials = new ArrayList<>();
-    final ListAdapter adapter = new ListAdapter(this, socials);
+    static ArrayList<String> keyList;
+
+    public final ListAdapter adapter = new ListAdapter(this, socials);
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference ref = firebaseDatabase.getReference("/socials");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +49,11 @@ public class MainActivity extends AppCompatActivity
         recyclerAdapter.setLayoutManager(new LinearLayoutManager(this));
         recyclerAdapter.setAdapter(adapter);
 
+
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                socials.clear();
                 for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) {
                     socials.add(dataSnapshot2.getValue(Social.class));
                 }

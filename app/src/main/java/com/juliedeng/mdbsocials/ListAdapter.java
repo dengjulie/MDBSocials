@@ -38,7 +38,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHold
     public void onBindViewHolder(final CustomViewHolder holder, int position) {
         Social social = socials.get(socials.size() - position - 1);
         holder.event_name.setText(social.getName());
-        holder.num_interested.setText(String.valueOf(social.getNumInterested()));
+        holder.num_interested.setText(String.valueOf(social.getNumInterested())+ " interested!");
         holder.email.setText(social.getEmail());
         Glide.with(context).load(social.getImageURL()).into(holder.image);
         holder.bind(socials.get(position));
@@ -70,10 +70,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHold
                     Social current_social = socials.get(socials.size() - getAdapterPosition() - 1);
                     Intent i = new Intent(context, DetailActivity.class);
                     i.putExtra("event_name", current_social.getName());
-                    i.putExtra("num_interested", String.valueOf(current_social.getNumInterested()) + " interested!");
+                    i.putExtra("num_interested", String.valueOf(current_social.getNumInterested()));
                     i.putExtra("email", current_social.getEmail());
                     i.putExtra("description", current_social.getDescription());
                     i.putExtra("imageURL", current_social.getImageURL());
+                    i.putExtra("firebaseKey", current_social.getFirebaseKey());
+                    i.putExtra("interestedEmails", current_social.getInterestedEmails());
                     context.startActivity(i);
                 }
             });

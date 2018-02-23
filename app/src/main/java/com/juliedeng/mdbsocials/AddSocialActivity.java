@@ -137,7 +137,8 @@ public class AddSocialActivity extends AppCompatActivity {
                 Long timestamp = (new Date()).getTime();
                 String imageURL = taskSnapshot.getDownloadUrl().toString();
 
-                Social social = new Social(name, description, email, imageURL, timestamp, date);
+
+                Social social = new Social(name, description, email, imageURL, timestamp, date, key);
                 ref.child("socials").child(key).setValue(social);
                 startActivity(new Intent(AddSocialActivity.this, MainActivity.class));
             }

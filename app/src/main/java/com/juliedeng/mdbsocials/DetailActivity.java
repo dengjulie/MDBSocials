@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,6 +24,7 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 public class DetailActivity extends AppCompatActivity {
@@ -35,6 +37,7 @@ public class DetailActivity extends AppCompatActivity {
 
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference ref = firebaseDatabase.getReference("/socials");
+    DatabaseReference interestedRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +61,33 @@ public class DetailActivity extends AppCompatActivity {
         });
 
         String name = getIntent().getStringExtra("event_name");
-        String email = getIntent().getStringExtra("email");
-        final String number_interested = getIntent().getStringExtra("num_interested");
+        final String email = getIntent().getStringExtra("email");
+        final String number_interested = getIntent().getStringExtra("num_interested"); //this is just the number
         String event_description = getIntent().getStringExtra("description");
         String imageURL = getIntent().getStringExtra("imageURL");
+        final ArrayList<String> interestedEmails;
+        if (getIntent().getStringArrayListExtra("interestedEmails")!=null) {
+            interestedEmails = getIntent().getStringArrayListExtra("interestedEmails");
+        } else {
+            interestedEmails = new ArrayList<>();
+        }
+        final String firebaseKey = getIntent().getStringExtra("firebaseKey");
+
+        interestedRef = firebaseDatabase.getReference("/socials/" + firebaseKey + "/interestedEmails");
+
+        rsvp = interestedEmails.contains(email);
+        num_interested.setText(interestedEmails.size() + " interested!");
+
+        if (!rsvp) {
+            interested.setText("RSVP");
+            interested.setBackgroundColor(Color.parseColor("#ff69b4"));
+        } else {
+            interested.setText("RSVP'd");
+            interested.setBackgroundColor(Color.parseColor("#32C7C7"));
+        }
+
         event_name.setText(name);
         mEmail.setText("Created by: " + email);
-        num_interested.setText(number_interested + " interested!");
         description.setText("Description:\n" + event_description);
         Glide.with(getApplicationContext()).load(imageURL).into(image);
 
@@ -72,72 +95,41 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (rsvp) {
-                    interested.setText("RSVP");
-                    interested.setBackgroundColor(Color.parseColor("#32C7C7"));
-                    num_interested.setText(number_interested + " interested!");
+                    interestedRef.runTransaction(new Transaction.Handler() {
+                        @Override
+                        public Transaction.Result doTransaction(MutableData mutableData) {
+                            interestedEmails.remove(email);
+                            ref.child(firebaseKey).child("interestedEmails").setValue(interestedEmails);
+                            ref.child(firebaseKey).child("numInterested").setValue(interestedEmails.size());
+                            return Transaction.success(mutableData);
+                        }
+                        @Override
+                        public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                            interested.setText("RSVP");
+                            interested.setBackgroundColor(Color.parseColor("#ff69b4"));
+                            num_interested.setText(interestedEmails.size() + " interested!");
+                            rsvp = !rsvp;
+                        }
+                    });
                 } else {
-                    interested.setText("Un-RSVP");
-                    interested.setBackgroundColor(Color.parseColor("#ff0000"));
-                    int curr_num_interested = Integer.parseInt(number_interested) + 1;
-                    num_interested.setText(curr_num_interested + " interested!");
+                    interestedRef.runTransaction(new Transaction.Handler() {
+                        @Override
+                        public Transaction.Result doTransaction(MutableData mutableData) {
+                            interestedEmails.add(email);
+                            ref.child(firebaseKey).child("interestedEmails").setValue(interestedEmails);
+                            ref.child(firebaseKey).child("numInterested").setValue(interestedEmails.size());
+                            return Transaction.success(mutableData);
+                        }
+                        @Override
+                        public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                            interested.setText("RSVP'd");
+                            interested.setBackgroundColor(Color.parseColor("#32C7C7"));
+                            num_interested.setText(interestedEmails.size() + " interested!");
+                            rsvp = !rsvp;
+                        }
+                    });
                 }
-                rsvp = !rsvp;
             }
         });
-
-//        ref.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot dataSnapshot2 : dataSnapshot.getChildren()) {
-//                    socials.add(dataSnapshot2.getValue(Social.class));
-//                }
-//                Collections.sort(socials, new SocialComparator());
-//                adapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                Log.w("Database", "Failed to read value.", error.toException());
-//            }
-//        });
-//
-//        interested.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                ref.runTransaction(new Transaction.Handler() {
-//                    @Override
-//                    public Transaction.Result doTransaction(MutableData mutableData) {
-//                        DataSnapshot snapshot = transaction.get(ref);
-//                    }
-//
-//                    @Override
-//                    public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-//
-//                    }
-//
-//                    @Override
-//                    public Void apply(Transaction transaction) throws FirebaseFirestoreException {
-//                        DataSnapshot snapshot = transaction.get(sfDocRef);
-//                        double newPopulation = snapshot.getDouble("population") + 1;
-//                        transaction.update(sfDocRef, "population", newPopulation);
-//
-//                        // Success
-//                        return null;
-//                    }
-//                }).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void aVoid) {
-//                        Log.d(TAG, "Transaction success!");
-//                    }
-//                })
-//                        .addOnFailureListener(new OnFailureListener() {
-//                            @Override
-//                            public void onFailure(@NonNull Exception e) {
-//                                Log.w(TAG, "Transaction failure.", e);
-//                            }
-//                        });
-//
-//            }
-//        });
     }
 }
