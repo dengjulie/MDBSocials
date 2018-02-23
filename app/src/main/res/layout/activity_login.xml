@@ -5,7 +5,7 @@
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/lightblue"
     android:clickable="true"
     android:focusableInTouchMode="true"
     tools:context="com.juliedeng.mdbsocials.LoginActivity">
@@ -17,11 +17,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:maxWidth="42dp"
+        android:maxHeight="42dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/mdb" />
+        app:srcCompat="@mipmap/mdb_whiteoutline" />
 
 
     <EditText
@@ -32,6 +34,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="40dp"
         android:ems="10"
+        android:textColor="@color/white"
+        android:fontFamily="@font/comfortaa_light"
         android:hint="juliedeng@berkeley.edu"
         android:inputType="textEmailAddress"
         android:maxLines="1"
@@ -48,6 +52,7 @@
         android:layout_marginTop="32dp"
         android:ems="10"
         android:hint="123password"
+        android:fontFamily="@font/comfortaa_light"
         android:inputType="textPassword"
         android:maxLines="1"
         android:singleLine="true"
@@ -62,6 +67,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Login"
+        android:textAllCaps="false"
+        android:fontFamily="@font/comfortaa_light"
+        android:background="@color/lightblue"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_password" />
@@ -74,6 +83,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Forgot your password?"
+        android:fontFamily="@font/comfortaa_light"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,6 +98,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Don't have an account? Sign up."
+        android:fontFamily="@font/comfortaa_light"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_button" />
@@ -98,6 +111,7 @@
         android:layout_marginBottom="2dp"
         android:layout_marginStart="2dp"
         android:text="EMAIL"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/login_email"
         app:layout_constraintStart_toStartOf="@+id/login_email" />
 
@@ -108,6 +122,7 @@
         android:layout_marginBottom="2dp"
         android:layout_marginStart="2dp"
         android:text="PASSWORD"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/login_password"
         app:layout_constraintStart_toStartOf="@+id/login_password" />
 </android.support.constraint.ConstraintLayout>
