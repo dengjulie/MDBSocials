@@ -70,7 +70,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHold
                     Social current_social = socials.get(socials.size() - getAdapterPosition() - 1);
                     Intent i = new Intent(context, DetailActivity.class);
                     i.putExtra("event_name", current_social.getName());
-                    i.putExtra("num_interested", String.valueOf(current_social.getNumInterested()));
+                    i.putExtra("num_interested", String.valueOf(current_social.getNumInterested()) + " interested!");
                     i.putExtra("email", current_social.getEmail());
                     i.putExtra("description", current_social.getDescription());
                     i.putExtra("imageURL", current_social.getImageURL());
