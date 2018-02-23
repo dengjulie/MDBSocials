@@ -6,6 +6,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/card"
+        android:background="@color/lightblue"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -28,6 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
             android:text="Event Name"
+            android:fontFamily="@font/comfortaa_light"
+            android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@+id/image"
             app:layout_constraintTop_toTopOf="@+id/image" />
 
@@ -37,6 +40,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="# Interested: "
+            android:fontFamily="@font/comfortaa_light"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/event_name"
             app:layout_constraintTop_toBottomOf="@+id/event_name" />
 
@@ -46,6 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Contact: "
+            android:fontFamily="@font/comfortaa_light"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/num_interested"
             app:layout_constraintTop_toBottomOf="@+id/num_interested" />
 
