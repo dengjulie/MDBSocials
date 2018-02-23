@@ -4,7 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background3"
     tools:context="com.juliedeng.mdbsocials.DetailActivity">
+
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_width="45dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:adjustViewBounds="true"
+        android:background="@null"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back" />
 
     <TextView
         android:id="@+id/description"
@@ -13,8 +27,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="description"
+        android:fontFamily="@font/comfortaa_light"
+        android:gravity="center"
+        android:lineSpacingExtra="10sp"
+        android:text="description\nhello"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image" />
 
@@ -22,13 +41,13 @@
         android:id="@+id/interested"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="4dp"
-        android:text="interested"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/num_interested"
-        app:layout_constraintTop_toTopOf="@+id/num_interested" />
+        android:layout_marginTop="8dp"
+        android:background="@color/lightblue"
+        android:fontFamily="@font/comfortaa_light"
+        android:text="RSVP"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="@+id/num_interested"
+        app:layout_constraintTop_toBottomOf="@+id/num_interested" />
 
     <TextView
         android:id="@+id/email"
@@ -36,9 +55,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="By: // Contact: "
+        android:fontFamily="@font/comfortaa_light"
+        android:text="Created by: juliedeng@berkeley.edu"
+        android:textColor="@color/white"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/event_name" />
 
@@ -48,20 +70,27 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="72dp"
-        android:text="event name"
+        android:layout_marginTop="36dp"
+        android:fontFamily="@font/annie_use_your_telescope"
+        android:lineSpacingExtra="8sp"
+        android:text="Event Name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
+        android:textColor="@color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/num_interested"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="96dp"
-        android:text="Number interested:"
+        android:layout_height="25dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="88dp"
+        android:fontFamily="@font/comfortaa_light"
+        android:text="# interested"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description" />
 
@@ -71,19 +100,10 @@
         android:layout_height="195dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email"
         app:srcCompat="@mipmap/ic_launcher" />
 
-    <Button
-        android:id="@+id/back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -33,7 +34,8 @@ public class AddSocialActivity extends AppCompatActivity {
 
     private static final int PICTURE_UPLOAD = 1;
     EditText new_name, new_description, new_date;
-    Button create_button, back_button;
+    Button create_button;
+    ImageButton back_button;
     ImageView new_image;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();

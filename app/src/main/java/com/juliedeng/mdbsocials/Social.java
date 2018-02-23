@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by juliedeng on 2/20/18.
@@ -17,6 +19,7 @@ public class Social implements Serializable, Comparable<Social> {
     String name, description, email, imageURL, date;
     int numInterested;
     long timestamp;
+    ArrayList<String> interestedEmails;
 
     public Social() {
         this.name = null;
@@ -26,6 +29,7 @@ public class Social implements Serializable, Comparable<Social> {
         this.timestamp = 0;
         this.date = null;
         this.numInterested = 0;
+        interestedEmails = null;
     }
 
     public Social(String name, String description, String email, String imageURL, long timestamp, String date) {
@@ -36,6 +40,8 @@ public class Social implements Serializable, Comparable<Social> {
         this.timestamp = timestamp;
         this.date = date;
         this.numInterested = 1;
+        this.interestedEmails = new ArrayList<>();
+        this.interestedEmails.add(name);
     }
     public int compareTo(Social anotherInstance) {
         if (this.timestamp > anotherInstance.timestamp) {
