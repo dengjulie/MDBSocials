@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
 /**
- * Created by juliedeng on 2/20/18.
+ * Displays individual event information in each card of the list of socials in MainActivity.
  */
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHolder> {
@@ -30,20 +27,26 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHold
         this.context = context;
         this.socials = socials;
     }
+
     @Override
     public CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_view, parent, false);
         return new CustomViewHolder(view);
     }
+
     @Override
     public void onBindViewHolder(final CustomViewHolder holder, int position) {
         Social social = socials.get(socials.size() - position - 1);
         holder.event_name.setText(social.getName());
-        holder.num_interested.setText(String.valueOf(social.getNumInterested())+ " interested!");
+        holder.num_interested.setText(String.valueOf(social.getNumInterested()) + " interested!");
         holder.email.setText(social.getEmail());
         Glide.with(context).load(social.getImageURL()).into(holder.image);
-        if (position %2 ==0) {
-            holder.card.setBackgroundColor(Color.parseColor("#ff69b4"));
+        if (position % 2 == 0) {
+            holder.email.setTextColor(Color.parseColor("#32C7C7"));
+            holder.num_interested.setTextColor(Color.parseColor("#32C7C7"));
+            holder.event_name.setTextColor(Color.parseColor("#32C7C7"));
+            holder.card.setBackgroundColor(Color.parseColor("#ffffff"));
+
         }
         holder.bind(socials.get(position));
     }
@@ -58,16 +61,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHold
         ImageView image;
         ConstraintLayout card;
 
-        public CustomViewHolder (View view) {
-            super(view);
-            this.event_name = (TextView) view.findViewById(R.id.event_name);
-            this.num_interested = (TextView) view.findViewById(R.id.num_interested);
-            this.email = (TextView) view.findViewById(R.id.email);
-            this.image = (ImageView) view.findViewById(R.id.image);
-            this.card = (ConstraintLayout) view.findViewById(R.id.card);
+        public CustomViewHolder(View v) {
+            super(v);
+            this.event_name = v.findViewById(R.id.event_name);
+            this.num_interested = v.findViewById(R.id.num_interested);
+            this.email = v.findViewById(R.id.email);
+            this.image = v.findViewById(R.id.image);
+            this.card = v.findViewById(R.id.card);
         }
 
-        void bind (Social social) {
+        void bind(Social social) {
             card.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

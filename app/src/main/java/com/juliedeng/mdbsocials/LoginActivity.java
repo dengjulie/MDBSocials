@@ -21,10 +21,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * Created by juliedeng on 2/18/18.
+ * The initial screen where users input login information. Can also redirect to a sign up page.
  */
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
     private EditText login_email, login_password;
     private TextView forgot_password, signup;
@@ -43,6 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         login_button = findViewById(R.id.login_button);
         forgot_password = findViewById(R.id.forgot_password_link);
         signup = findViewById(R.id.signup_link);
+        ConstraintLayout layout=(ConstraintLayout)findViewById(R.id.background);
+
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -50,75 +52,18 @@ public class LoginActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     Log.d(TAG, user.toString());
-                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(i);
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 }
             }
         };
 
-        login_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                attemptLogin();
-            }
-        });
-        forgot_password.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (login_email.getText().length() == 0) {
-                    Toast.makeText(LoginActivity.this, "Input an email.",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                mAuth.sendPasswordResetEmail(login_email.getText().toString())
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(LoginActivity.this, "Email sent.",
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
-//                                    need better error message
-                                    Toast.makeText(LoginActivity.this, "Failed to send. Make sure you have inputted a valid email.",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-            }
-        });
-        signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this, SignupActivity.class);
-                startActivity(i);
-            }
-        });
-        ConstraintLayout layout=(ConstraintLayout)findViewById(R.id.background);
-        layout.setOnClickListener(new View.OnClickListener() {
-//            this doesnt do shit :(
-            @Override
-            public void onClick(View v){
-                login_email.clearFocus();
-                login_password.clearFocus();
-                findViewById(R.id.background).requestFocus();
-            }
-        });
-        login_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-        login_password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
+        login_button.setOnClickListener(this);
+        forgot_password.setOnClickListener(this);
+        signup.setOnClickListener(this);
+        layout.setOnClickListener(this);
+
+        login_email.setOnFocusChangeListener(this);
+        login_password.setOnFocusChangeListener(this);
     }
 
     private void attemptLogin() {
@@ -180,4 +125,66 @@ public class LoginActivity extends AppCompatActivity {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case (R.id.login_button):
+                attemptLogin();
+                break;
+            case (R.id.forgot_password_link):
+                reset_password();
+                break;
+            case (R.id.signup_link):
+                Intent i = new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(i);
+                break;
+            case (R.id.background):
+//                test if this does anything
+                login_email.clearFocus();
+                login_password.clearFocus();
+                findViewById(R.id.background).requestFocus();
+                break;
+            case (R.id.login_email):
+
+                break;
+            default:
+        }
+    }
+
+    public void onFocusChange(View v, boolean hasFocus) {
+        switch(v.getId()) {
+            case (R.id.login_email):
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+                break;
+            case (R.id.login_password):
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+                break;
+            default:
+        }
+    }
+
+    public void reset_password() {
+        if (login_email.getText().length() == 0) {
+            Toast.makeText(LoginActivity.this, "Input an email.",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mAuth.sendPasswordResetEmail(login_email.getText().toString())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, "Email sent.",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Failed to send. Make sure you have inputted a valid email.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 }

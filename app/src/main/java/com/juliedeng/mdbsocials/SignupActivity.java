@@ -20,10 +20,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
- * Created by juliedeng on 2/18/18.
+ * Page for users to sign up for an account.
  */
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText signup_email, signup_password, signup_confirmpassword;
     private TextView login_link;
@@ -43,6 +43,16 @@ public class SignupActivity extends AppCompatActivity {
         signup_button = findViewById(R.id.signup_button);
         login_link = findViewById(R.id.login_link);
         mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                }
+            }
+        };
+
         View.OnFocusChangeListener keyboardHider = new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -51,20 +61,8 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
         };
-
-        signup_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                attemptSignup();
-            }
-        });
-        login_link.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(SignupActivity.this, LoginActivity.class);
-                startActivity(i);
-            }
-        });
+        signup_button.setOnClickListener(this);
+        login_link.setOnClickListener(this);
         signup_email.setOnFocusChangeListener(keyboardHider);
         signup_password.setOnFocusChangeListener(keyboardHider);
         signup_button.setOnFocusChangeListener(keyboardHider);
@@ -114,7 +112,20 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.signup_button:
+                attemptSignup();
+                break;
+            case R.id.login_link:
+                startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+                break;
+            default:
+        }
     }
 }

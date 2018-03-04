@@ -27,11 +27,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Displays the list of events, in order of posting time.
+ */
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     final ArrayList<Social> socials = new ArrayList<>();
-    static ArrayList<String> keyList;
 
     public final ListAdapter adapter = new ListAdapter(this, socials);
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -41,14 +44,18 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        RecyclerView recyclerAdapter = (RecyclerView)findViewById(R.id.recyclerView);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        FloatingActionButton fab = findViewById(R.id.fab);
+        RecyclerView recyclerAdapter = findViewById(R.id.recyclerView);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+
+        setSupportActionBar(toolbar);
         recyclerAdapter.setLayoutManager(new LinearLayoutManager(this));
         recyclerAdapter.setAdapter(adapter);
-
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -67,22 +74,13 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, AddSocialActivity.class);
-                startActivity(i);
-            }
-        });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        fab.setOnClickListener(this);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
@@ -117,5 +115,14 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab:
+                startActivity(new Intent(MainActivity.this, AddSocialActivity.class));
+                break;
+            default:
+        }
     }
 }

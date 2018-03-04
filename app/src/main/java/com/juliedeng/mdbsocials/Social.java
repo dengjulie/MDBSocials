@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by juliedeng on 2/20/18.
+ * Model class for each social/event. Details for each social all contained in the class variables.
  */
 
 public class Social implements Serializable, Comparable<Social> {
@@ -45,6 +45,7 @@ public class Social implements Serializable, Comparable<Social> {
         this.interestedEmails.add(email);
         this.firebaseKey = firebaseKey;
     }
+
     public int compareTo(Social anotherInstance) {
         if (this.timestamp > anotherInstance.timestamp) {
             return 1;
