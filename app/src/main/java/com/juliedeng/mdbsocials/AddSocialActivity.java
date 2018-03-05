@@ -94,11 +94,16 @@ public class AddSocialActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    /**
+     * Hides the keyboard.
+     * @param view
+     */
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case (R.id.create_button):

@@ -7,7 +7,6 @@ import java.util.Comparator;
  * and subsequently ordered by the posting time.
  */
 
-//is this useless ?? ? ?
 public class SocialComparator implements Comparator<Social> {
     @Override
     public int compare(Social o1, Social o2) {

@@ -46,6 +46,13 @@ public class Social implements Serializable, Comparable<Social> {
         this.firebaseKey = firebaseKey;
     }
 
+    /**
+     * Compares socials based on time so that the order in which the list is rendered is by the
+     * socials' timestamps.
+     *
+     * @param anotherInstance
+     * @return 1 if posted more recently, and -1 if posted less recently
+     */
     public int compareTo(Social anotherInstance) {
         if (this.timestamp > anotherInstance.timestamp) {
             return 1;

@@ -57,6 +57,10 @@ public class MainActivity extends AppCompatActivity
         recyclerAdapter.setLayoutManager(new LinearLayoutManager(this));
         recyclerAdapter.setAdapter(adapter);
 
+        /**
+         * The following event listener makes sure that the user instantly views the most recently
+         * posted events made by other Firebase users.
+         */
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -70,7 +74,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onCancelled(DatabaseError error) {
-                Log.w("Database", "Failed to read value.", error.toException());
+                Log.w("Database", error.getMessage(), error.toException());
             }
         });
 

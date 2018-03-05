@@ -31,7 +31,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button login_button;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private final static String TAG = "LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +50,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    Log.d(TAG, user.toString());
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 }
             }
@@ -82,7 +80,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-
+    /**
+     * Hides the keyboard.
+     * @param view
+     */
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(LoginActivity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -114,6 +115,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    @Override
     public void onFocusChange(View v, boolean hasFocus) {
         switch(v.getId()) {
             case (R.id.login_email):
@@ -130,6 +132,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    /**
+     * Attempts to send a reset password link to the user, and displays information to the user
+     * accordingly on whether Firebase was successful or not.
+     */
     public void reset_password() {
         if (login_email.getText().length() == 0) {
             Toast.makeText(LoginActivity.this, R.string.no_email,

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background7"
+    android:background="@drawable/background14"
     tools:context="com.juliedeng.mdbsocials.DetailActivity">
 
     <ImageButton
@@ -26,14 +26,15 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="72dp"
         android:fontFamily="@font/comfortaa_light"
         android:gravity="center"
         android:lineSpacingExtra="10sp"
         android:text="description\nhello"
         android:textColor="@color/white"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image" />
 
@@ -56,9 +57,10 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:fontFamily="@font/comfortaa_light"
+        android:gravity="center"
         android:text="Created by: juliedeng@berkeley.edu"
         android:textColor="@color/white"
-        android:gravity="center"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +89,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="36dp"
         android:fontFamily="@font/comfortaa_light"
         android:text="# interested"
         android:textColor="@color/white"

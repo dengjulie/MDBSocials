@@ -30,7 +30,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private Button signup_button;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private final static String TAG = "SignupActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +69,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    /**
+     * Hides the keyboard.
+     * @param view
+     */
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);

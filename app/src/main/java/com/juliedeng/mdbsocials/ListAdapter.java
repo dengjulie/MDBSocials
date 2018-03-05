@@ -42,11 +42,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHold
         holder.email.setText(social.getEmail());
         Glide.with(context).load(social.getImageURL()).into(holder.image);
         if (position % 2 == 0) {
-            holder.email.setTextColor(Color.parseColor("#32C7C7"));
-            holder.num_interested.setTextColor(Color.parseColor("#32C7C7"));
-            holder.event_name.setTextColor(Color.parseColor("#32C7C7"));
-            holder.card.setBackgroundColor(Color.parseColor("#ffffff"));
-
+            holder.card.setBackgroundColor(context.getResources().getColor(R.color.lightpink));
         }
         holder.bind(socials.get(position));
     }
@@ -56,6 +52,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHold
         return socials.size();
     }
 
+    /**
+     * Card view within the RecyclerView list of events.
+     */
     class CustomViewHolder extends RecyclerView.ViewHolder {
         TextView event_name, num_interested, email;
         ImageView image;

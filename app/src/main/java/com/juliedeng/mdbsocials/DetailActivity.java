@@ -108,6 +108,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    /**
+     * Runs a transaction with Firebase so that the value of the number of people interested
+     * in an event is accurate. Adds or removes an email from the interested list according
+     * to the current state of the user's RSVP.
+     */
     public void interestTransaction() {
         if (rsvp) {
             interestedRef.runTransaction(new Transaction.Handler() {
@@ -122,7 +127,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 @Override
                 public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
                     interested.setText("RSVP");
-                    interested.setBackgroundColor(Color.parseColor("#ff69b4"));
+                    interested.setBackgroundColor(getResources().getColor(R.color.darkpink));
                     num_interested.setText(interestedEmails.size() + " interested!");
                     rsvp = !rsvp;
                 }
@@ -140,7 +145,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 @Override
                 public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
                     interested.setText("RSVP'd");
-                    interested.setBackgroundColor(Color.parseColor("#32C7C7"));
+                    interested.setBackgroundColor(getResources().getColor(R.color.darkblue));
                     num_interested.setText(interestedEmails.size() + " interested!");
                     rsvp = !rsvp;
                 }

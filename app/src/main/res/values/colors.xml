@@ -5,7 +5,11 @@
     <color name="colorAccent">#FF4081</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
-    <color name="lightblue">#32C7C7</color>
+    <color name="lightblue">#9becff</color>
+    <color name="lightpink">#fcc4e5</color>
     <color name="yellow">#FFF200</color>
     <color name="lightgray">#D3D3D3</color>
+    <color name="darkgray">#708090</color>
+    <color name="darkpink">#ff69b4</color>
+    <color name="darkblue">#32C7C7</color>
 </resources>

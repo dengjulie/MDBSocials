@@ -43,6 +43,14 @@ public class Utils {
 
     public static final int PICTURE_UPLOAD = 1;
 
+    /**
+     * Attempt to sign up/create a user with Firebase Authentication services.
+     * @param mEmail
+     * @param mPassword
+     * @param mConfirmPassword
+     * @param mAuth
+     * @param signupActivity
+     */
     public static void attemptSignup(EditText mEmail, EditText mPassword, EditText mConfirmPassword, FirebaseAuth mAuth, final SignupActivity signupActivity) {
         String email = mEmail.getText().toString();
         String password = mPassword.getText().toString();
@@ -78,6 +86,13 @@ public class Utils {
         }
     }
 
+    /**
+     * Attempt to login a user with Firebase Authentication services.
+     * @param mEmail
+     * @param mPassword
+     * @param mAuth
+     * @param loginActivity
+     */
     public static void attemptLogin(EditText mEmail, EditText mPassword, FirebaseAuth mAuth, final LoginActivity loginActivity) {
         String email = mEmail.getText().toString();
         String password = mPassword.getText().toString();
@@ -100,6 +115,18 @@ public class Utils {
         }
     }
 
+    /**
+     * Add a new social event's details to the Firebase Database if the fields are filled in correctly.
+     *
+     * @param ref
+     * @param socialsRef
+     * @param key
+     * @param selectedImageUri
+     * @param addSocialActivity
+     * @param mName
+     * @param mDate
+     * @param mDescription
+     */
     public static void submitSocial(final DatabaseReference ref, StorageReference socialsRef, final String key, Uri selectedImageUri, final AddSocialActivity addSocialActivity, EditText mName, EditText mDate, EditText mDescription) {
 
         if (mName.getText().toString().equals("") || mDate.getText().toString().equals("") || mDescription.getText().toString().equals("")) {
@@ -136,6 +163,12 @@ public class Utils {
         });
     }
 
+    /**
+     * Progress bar to be displayed throughout the application when loading.
+     *
+     * @param context
+     * @param message
+     */
     public static void progressBar(Context context, String message) {
         final ProgressDialog progress = new ProgressDialog(context);
         progress.setMessage(message);
