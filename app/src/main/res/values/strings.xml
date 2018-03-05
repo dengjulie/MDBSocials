@@ -7,6 +7,11 @@
 
     <string name="action_settings">Settings</string>
     <string name="socials_reference">/socials</string>
+    <string name="interested_reference">/interested</string>
+
     <string name="storage_URL">gs://mdbsocials-ecfac.appspot.com</string>
 
+    <string name="storage_failure">Unable to upload file into storage.</string>
+
+    <string name="select_picture">Select Picture</string>
 </resources>

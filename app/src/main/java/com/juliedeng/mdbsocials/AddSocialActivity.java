@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -39,7 +38,7 @@ public class AddSocialActivity extends AppCompatActivity implements View.OnClick
     private ImageView new_image;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference ref = database.getReference(getString(R.string.socials_reference));
+    private DatabaseReference ref = database.getReference("/socials");
     private StorageReference storageRef;
     private static FirebaseAuth mAuth;
     private static FirebaseUser mUser;
@@ -85,8 +84,6 @@ public class AddSocialActivity extends AppCompatActivity implements View.OnClick
         if (requestCode == Utils.PICTURE_UPLOAD && resultCode == RESULT_OK) {
             selectedImageUri = data.getData();
             if (null != selectedImageUri) {
-                String path = selectedImageUri.getPath();
-                Log.e("image path", path + "");
                 new_image.setImageURI(selectedImageUri);
             }
         }
@@ -99,13 +96,10 @@ public class AddSocialActivity extends AppCompatActivity implements View.OnClick
         storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(getString(R.string.storage_URL));
         StorageReference socialsRef = storageRef.child(key + ".png");
 
-        if (selectedImageUri == null) {
-            Log.d("SUBMIT", "image null");
-        }
         socialsRef.putFile(selectedImageUri).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(AddSocialActivity.this, "Cannot upload file into storage.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddSocialActivity.this, R.string.storage_failure, Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -113,7 +107,7 @@ public class AddSocialActivity extends AppCompatActivity implements View.OnClick
                 String name = new_name.getText().toString();
                 String date = new_date.getText().toString();
                 String description = new_description.getText().toString();
-                String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+                String email = mUser.getEmail();
                 Long timestamp = (new Date()).getTime();
                 String imageURL = taskSnapshot.getDownloadUrl().toString();
 
@@ -137,7 +131,7 @@ public class AddSocialActivity extends AppCompatActivity implements View.OnClick
             case (R.id.new_image):
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), Utils.PICTURE_UPLOAD);
+                startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), Utils.PICTURE_UPLOAD);
                 break;
             case (R.id.back_button):
                 startActivity(new Intent(AddSocialActivity.this, MainActivity.class));

@@ -35,21 +35,13 @@ import com.google.firebase.storage.UploadTask;
 import java.util.Date;
 
 /**
- * Class that contains useful functions used repeatedly throughout the application. 
+ * Class that contains useful functions used repeatedly throughout the application.
  */
 
 //can utils extend appcompatactviity
 public class Utils extends AppCompatActivity {
 
     public static final int PICTURE_UPLOAD = 1;
-
-    public static final String NAME_KEY = "name";
-    public static final String HOST_KEY = "host";
-    public static final String DESCRIPTION_KEY = "description";
-    public static final String PEOPLE_INTERESTED = "peopleInterested";
-    public static final String NUMBER_INTERESTED = "numberInterested";
-    public static final String FIREBASE_URL = "firebaseURL";
-    public static final String FIREBASE_KEY = "firebaseKey";
 
     public final View.OnFocusChangeListener keyboardHider = new View.OnFocusChangeListener() {
         @Override
@@ -67,9 +59,10 @@ public class Utils extends AppCompatActivity {
     }
 
     //    check to see how aayush does this as well
-    private static void attemptSignup(EditText mEmail, EditText mPassword, FirebaseAuth mAuth, final SignupActivity signupActivity) {
+    public static void attemptSignup(EditText mEmail, EditText mPassword, EditText mConfirmPassword, FirebaseAuth mAuth, final SignupActivity signupActivity) {
         String email = mEmail.getText().toString();
         String password = mPassword.getText().toString();
+        String confirmPassword = mConfirmPassword.getText().toString();
         if (email.length() == 0) {
             Toast.makeText(signupActivity, "Input an email.",
                     Toast.LENGTH_SHORT).show();
@@ -86,6 +79,12 @@ public class Utils extends AppCompatActivity {
             return;
         }
 
+        if (!password.equals(confirmPassword)) {
+            Toast.makeText(signupActivity, "Passwords do not match.",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (!email.equals("") && !password.equals("")) {
 
             mAuth.createUserWithEmailAndPassword(email, password)
@@ -95,6 +94,8 @@ public class Utils extends AppCompatActivity {
                             if (!task.isSuccessful()) {
 //                                check toast message
                                 Toast.makeText(signupActivity, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                            } else {
+                                signupActivity.getApplication().startActivity(new Intent(signupActivity, MainActivity.class));
                             }
                         }
                     });

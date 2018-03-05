@@ -70,57 +70,29 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    private void attemptSignup() {
-        Log.d(TAG, "enter  func");
-        if (signup_email.getText().length() == 0) {
-            Toast.makeText(SignupActivity.this, "Input an email.",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (signup_password.getText().length() == 0) {
-            Toast.makeText(SignupActivity.this, "Input a password.",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-        String email = signup_email.getText().toString();
-        String password = signup_password.getText().toString();
-        if (password.length() < 6) {
-            Log.d(TAG, "enter  bad pw check");
-            Toast.makeText(SignupActivity.this, "Passwords must be longer than 6 characters.",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        Log.d(TAG, "pass bad pw check");
-        if (!email.equals("") && !password.equals("")) {
-
-            Log.d(TAG, "enter  if statement");
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
-                            if (!task.isSuccessful()) {
-//                                check toast message
-                                Toast.makeText(SignupActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
-                            } else {
-                                startActivity(new Intent(SignupActivity.this, MainActivity.class));
-                            }
-                        }
-                    });
-        }
-    }
-
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.signup_button:
-                attemptSignup();
+                Utils.attemptSignup(signup_email, signup_password, signup_confirmpassword, mAuth, this);
                 break;
             case R.id.login_link:
                 startActivity(new Intent(SignupActivity.this, LoginActivity.class));

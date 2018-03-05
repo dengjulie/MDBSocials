@@ -36,7 +36,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private String firebaseKey, userEmail;
 
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    DatabaseReference ref = firebaseDatabase.getReference(getString(R.string.socials_reference));
+//    cant get this to use the R.string reference
+    DatabaseReference ref = firebaseDatabase.getReference("/socials");
     DatabaseReference interestedRef;
 
     @Override
@@ -69,7 +70,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        interestedRef = firebaseDatabase.getReference(getString(R.string.socials_reference) + firebaseKey + "/interestedEmails");
+        interestedRef = firebaseDatabase.getReference("/socials" + firebaseKey + "/interestedEmails");
         rsvp = interestedEmails.contains(userEmail);
 
         /**
