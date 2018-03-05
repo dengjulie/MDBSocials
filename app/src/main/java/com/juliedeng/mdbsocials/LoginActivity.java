@@ -66,43 +66,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         login_password.setOnFocusChangeListener(this);
     }
 
-    private void attemptLogin() {
-        String email = login_email.getText().toString();
-        String password = login_password.getText().toString();
-        Log.v(TAG, email + password);
-        if (!email.equals("") && !password.equals("")) {
-            Log.v(TAG, "ENTERED");
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-
-                            Log.d(TAG, "attempt sign in");
-                            if (task.isSuccessful()) {
-                                Log.v(TAG, "signInWithEmail:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(i);
-                            } else {
-                                Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    })
-                    .addOnFailureListener(this, new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d(TAG, "noo");
-                        }
-                    });
-        } else {
-            Toast.makeText(LoginActivity.this, "All fields must be filled in.",
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
     @Override
     public void onStart() {
         super.onStart();
@@ -129,7 +92,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case (R.id.login_button):
-                attemptLogin();
+                Utils.attemptLogin(login_email, login_password, mAuth, this);
                 break;
             case (R.id.forgot_password_link):
                 reset_password();
@@ -169,7 +132,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void reset_password() {
         if (login_email.getText().length() == 0) {
-            Toast.makeText(LoginActivity.this, "Input an email.",
+            Toast.makeText(LoginActivity.this, R.string.no_email,
                     Toast.LENGTH_SHORT).show();
             return;
         }
@@ -178,10 +141,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Email sent.",
+                            Toast.makeText(LoginActivity.this, R.string.email_sent,
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(LoginActivity.this, "Failed to send. Make sure you have inputted a valid email.",
+                            Toast.makeText(LoginActivity.this, R.string.reset_pw_fail,
                                     Toast.LENGTH_SHORT).show();
                         }
                     }

@@ -35,9 +35,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private final ArrayList<String> interestedEmails = new ArrayList<>();
     private String firebaseKey, userEmail;
 
-    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-//    cant get this to use the R.string reference
-    DatabaseReference ref = firebaseDatabase.getReference("/socials");
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference ref;
     DatabaseReference interestedRef;
 
     @Override
@@ -52,6 +51,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         event_name = findViewById(R.id.event_name);
         num_interested = findViewById(R.id.num_interested);
         image = findViewById(R.id.image);
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        ref = firebaseDatabase.getReference(getString(R.string.socials_reference));
 
         /**
          * Receive event details from previous activity

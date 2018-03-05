@@ -14,4 +14,7 @@
     <string name="storage_failure">Unable to upload file into storage.</string>
 
     <string name="select_picture">Select Picture</string>
+    <string name="no_email">Please input an email.</string>
+    <string name="email_sent">Email sent.</string>
+    <string name="reset_pw_fail">Failed to send. Make sure you have inputted a valid email.</string>
 </resources>

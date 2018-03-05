@@ -35,11 +35,9 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     final ArrayList<Social> socials = new ArrayList<>();
-
     public final ListAdapter adapter = new ListAdapter(this, socials);
-    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    DatabaseReference ref = firebaseDatabase.getReference("/socials");
-
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +50,8 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        ref = firebaseDatabase.getReference(getString(R.string.socials_reference));
 
         setSupportActionBar(toolbar);
         recyclerAdapter.setLayoutManager(new LinearLayoutManager(this));

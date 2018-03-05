@@ -3,6 +3,7 @@ package com.juliedeng.mdbsocials;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -43,22 +44,6 @@ public class Utils extends AppCompatActivity {
 
     public static final int PICTURE_UPLOAD = 1;
 
-    public final View.OnFocusChangeListener keyboardHider = new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (!hasFocus) {
-                hideKeyboard(v);
-            }
-        }
-    };
-
-    //    does utils have to be static
-    public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(LoginActivity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    //    check to see how aayush does this as well
     public static void attemptSignup(EditText mEmail, EditText mPassword, EditText mConfirmPassword, FirebaseAuth mAuth, final SignupActivity signupActivity) {
         String email = mEmail.getText().toString();
         String password = mPassword.getText().toString();
@@ -92,7 +77,6 @@ public class Utils extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (!task.isSuccessful()) {
-//                                check toast message
                                 Toast.makeText(signupActivity, task.getException().toString(), Toast.LENGTH_SHORT).show();
                             } else {
                                 signupActivity.getApplication().startActivity(new Intent(signupActivity, MainActivity.class));
@@ -102,7 +86,7 @@ public class Utils extends AppCompatActivity {
         }
     }
 
-    private static void attemptLogin(EditText mEmail, EditText mPassword, FirebaseAuth mAuth, final LoginActivity loginActivity) {
+    public static void attemptLogin(EditText mEmail, EditText mPassword, FirebaseAuth mAuth, final LoginActivity loginActivity) {
         String email = mEmail.getText().toString();
         String password = mPassword.getText().toString();
         if (!email.equals("") && !password.equals("")) {
@@ -113,6 +97,8 @@ public class Utils extends AppCompatActivity {
                             if (!task.isSuccessful()) {
                                 Toast.makeText(loginActivity, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
+                            } else {
+                                loginActivity.getApplication().startActivity(new Intent(loginActivity, MainActivity.class));
                             }
                         }
                     });
@@ -120,6 +106,42 @@ public class Utils extends AppCompatActivity {
             Toast.makeText(loginActivity, "All fields must be filled in.",
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public static void submitSocial(final DatabaseReference ref, StorageReference socialsRef, final String key, Uri selectedImageUri, final AddSocialActivity addSocialActivity, EditText mName, EditText mDate, EditText mDescription) {
+
+        if (mName.getText().toString().equals("") || mDate.getText().toString().equals("") || mDescription.getText().toString().equals("")) {
+            Toast.makeText(addSocialActivity, "Please fill out all the fields.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (selectedImageUri == null) {
+            Toast.makeText(addSocialActivity, "Please add an image.", Toast.LENGTH_SHORT).show();
+            return;
+
+        }
+
+        final String name = mName.getText().toString();
+        final String date = mDate.getText().toString();
+        final String description = mDescription.getText().toString();
+        final String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+        socialsRef.putFile(selectedImageUri).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(addSocialActivity, "Cannot upload file into storage.", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                Long timestamp = (new Date()).getTime();
+                String imageURL = taskSnapshot.getDownloadUrl().toString();
+
+                Social social = new Social(name, description, email, imageURL, timestamp, date, key);
+                ref.child(key).setValue(social);
+                addSocialActivity.getApplication().startActivity(new Intent(addSocialActivity, MainActivity.class));
+            }
+        });
     }
 
     public static void progressBar(Context context, String message) {
@@ -170,38 +192,5 @@ public class Utils extends AppCompatActivity {
         canvas.drawBitmap(bitmap, rect, rect, paint);
 
         return output;
-    }
-
-    //    consequences of declaring final
-    public void submitSocial(final DatabaseReference ref, Uri selectedImageUri, final AddSocialActivity addSocialActivity, EditText mName, EditText mDate, EditText mDescription) {
-
-        final String key = ref.push().getKey();
-        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(getString(R.string.storage_URL));
-        StorageReference socialsRef = storageRef.child(key + ".png");
-        final String name = mName.getText().toString();
-        final String date = mDate.getText().toString();
-        final String description = mDescription.getText().toString();
-        final String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-
-        if (selectedImageUri == null) {
-            Log.d("SUBMIT", "image null");
-        }
-        socialsRef.putFile(selectedImageUri).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(addSocialActivity, "Cannot upload file into storage.", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                Long timestamp = (new Date()).getTime();
-                String imageURL = taskSnapshot.getDownloadUrl().toString();
-
-                Social social = new Social(name, description, email, imageURL, timestamp, date, key);
-                ref.child("socials").child(key).setValue(social);
-                startActivity(new Intent(addSocialActivity, MainActivity.class));
-            }
-        });
     }
 }

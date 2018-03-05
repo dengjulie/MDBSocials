@@ -37,8 +37,8 @@ public class AddSocialActivity extends AppCompatActivity implements View.OnClick
     private ImageButton back_button;
     private ImageView new_image;
 
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference ref = database.getReference("/socials");
+    private FirebaseDatabase database;
+    private DatabaseReference ref;
     private StorageReference storageRef;
     private static FirebaseAuth mAuth;
     private static FirebaseUser mUser;
@@ -56,6 +56,11 @@ public class AddSocialActivity extends AppCompatActivity implements View.OnClick
         new_image = findViewById(R.id.new_image);
         create_button = findViewById(R.id.create_button);
         back_button = findViewById(R.id.back_button);
+
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference(getString(R.string.socials_reference));
+        storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(getString(R.string.storage_URL));
+        selectedImageUri = null;
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -89,35 +94,6 @@ public class AddSocialActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    public void submit() {
-        ref = FirebaseDatabase.getInstance().getReference();
-
-        final String key = ref.child("socials").push().getKey();
-        storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(getString(R.string.storage_URL));
-        StorageReference socialsRef = storageRef.child(key + ".png");
-
-        socialsRef.putFile(selectedImageUri).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(AddSocialActivity.this, R.string.storage_failure, Toast.LENGTH_SHORT).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                String name = new_name.getText().toString();
-                String date = new_date.getText().toString();
-                String description = new_description.getText().toString();
-                String email = mUser.getEmail();
-                Long timestamp = (new Date()).getTime();
-                String imageURL = taskSnapshot.getDownloadUrl().toString();
-
-                Social social = new Social(name, description, email, imageURL, timestamp, date, key);
-                ref.child("socials").child(key).setValue(social);
-                startActivity(new Intent(AddSocialActivity.this, MainActivity.class));
-            }
-        });
-    }
-
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -126,7 +102,9 @@ public class AddSocialActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case (R.id.create_button):
-                submit();
+                final String key = ref.push().getKey();
+                StorageReference socialsRef = storageRef.child(key + ".png");
+                Utils.submitSocial(ref, socialsRef, key, selectedImageUri, this, new_name, new_date, new_description);
                 break;
             case (R.id.new_image):
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
