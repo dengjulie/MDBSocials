@@ -3,10 +3,12 @@ package com.juliedeng.mdbsocials;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Date;
 
 /**
@@ -93,8 +97,7 @@ public class Utils {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (!task.isSuccessful()) {
-                                Toast.makeText(loginActivity, task.getException().toString(),
-                                        Toast.LENGTH_SHORT).show();
+                                Toast.makeText(loginActivity, task.getException().toString(), Toast.LENGTH_SHORT).show();
                             } else {
                                 loginActivity.getApplication().startActivity(new Intent(loginActivity, MainActivity.class));
                             }
@@ -166,7 +169,7 @@ public class Utils {
         final ProgressDialog progress = new ProgressDialog(context);
         progress.setMessage(message);
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progress.setIndeterminate(true);
+        progress.setIndeterminate(false);
         progress.setProgress(0);
         progress.show();
 
@@ -179,32 +182,16 @@ public class Utils {
                 while (jumpTime < totalProgressTime) {
                     try {
                         sleep(1000);
-                        jumpTime += 5;
+                        jumpTime += 30;
                         progress.setProgress(jumpTime);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
+                progress.dismiss();
             }
         };
         t.start();
     }
 
-//    class DownloadFilesTask extends AsyncTask<String, Void, Bitmap> {
-//        protected Bitmap doInBackground(String... strings) {
-//            try {return Glide.
-//                    with(getApplicationContext()).
-//                    load(strings[0]).
-//                    asBitmap().
-//                    into(100, 100). // Width and height
-//                    get();}
-//            catch (Exception e) {return null;}
-//        }
-//
-//        protected void onProgressUpdate(Void... progress) {}
-//
-//        protected void onPostExecute(Bitmap result) {
-//            imageDetail.setImageBitmap(result);
-//        }
-//    }
 }
