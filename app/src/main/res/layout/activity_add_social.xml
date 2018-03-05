@@ -17,7 +17,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="20dp"
         android:text="Create"
-        android:background="@color/lightblue"
+        android:background="@color/darkblue"
         android:textColor="@color/white"
         android:fontFamily="@font/comfortaa_light"
         android:textAllCaps="false"

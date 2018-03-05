@@ -3,20 +3,9 @@ package com.juliedeng.mdbsocials;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -26,10 +15,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -52,6 +38,7 @@ public class Utils {
      * @param signupActivity
      */
     public static void attemptSignup(EditText mEmail, EditText mPassword, EditText mConfirmPassword, FirebaseAuth mAuth, final SignupActivity signupActivity) {
+        Log.d("Signup", "Check if fields are valid");
         String email = mEmail.getText().toString();
         String password = mPassword.getText().toString();
         String confirmPassword = mConfirmPassword.getText().toString();
@@ -68,7 +55,8 @@ public class Utils {
         }
 
         if (!email.equals("") && !password.equals("")) {
-
+            Log.d("Signup", "Begin attempt to sign user up through Firebase.");
+            Utils.progressBar(signupActivity, signupActivity.getApplication().getString(R.string.signup_loading));
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(signupActivity, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -94,9 +82,12 @@ public class Utils {
      * @param loginActivity
      */
     public static void attemptLogin(EditText mEmail, EditText mPassword, FirebaseAuth mAuth, final LoginActivity loginActivity) {
+        Log.d("Login", "Check if fields are valid");
         String email = mEmail.getText().toString();
         String password = mPassword.getText().toString();
         if (!email.equals("") && !password.equals("")) {
+            Log.d("Login", "Begin attempt to login user up through Firebase.");
+            Utils.progressBar(loginActivity, loginActivity.getApplication().getString(R.string.login_loading));
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(loginActivity, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -128,6 +119,7 @@ public class Utils {
      * @param mDescription
      */
     public static void submitSocial(final DatabaseReference ref, StorageReference socialsRef, final String key, Uri selectedImageUri, final AddSocialActivity addSocialActivity, EditText mName, EditText mDate, EditText mDescription) {
+        Log.d("Add social", "Check if fields are valid.");
 
         if (mName.getText().toString().equals("") || mDate.getText().toString().equals("") || mDescription.getText().toString().equals("")) {
             Toast.makeText(addSocialActivity, R.string.unfilled_fields, Toast.LENGTH_SHORT).show();
@@ -139,11 +131,13 @@ public class Utils {
 
         }
 
+        Utils.progressBar(addSocialActivity, addSocialActivity.getApplication().getString(R.string.create_social_loading));
         final String name = mName.getText().toString();
         final String date = mDate.getText().toString();
         final String description = mDescription.getText().toString();
         final String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
+        Log.d("Add social", "Begin attempt to upload image to Firebase Storage.");
         socialsRef.putFile(selectedImageUri).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
@@ -152,10 +146,9 @@ public class Utils {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
+                Log.d("Add social", "Begin attempt to add new social with details to Firebase database.");
                 Long timestamp = (new Date()).getTime();
                 String imageURL = taskSnapshot.getDownloadUrl().toString();
-
                 Social social = new Social(name, description, email, imageURL, timestamp, date, key);
                 ref.child(key).setValue(social);
                 addSocialActivity.getApplication().startActivity(new Intent(addSocialActivity, MainActivity.class));
@@ -196,4 +189,22 @@ public class Utils {
         };
         t.start();
     }
+
+//    class DownloadFilesTask extends AsyncTask<String, Void, Bitmap> {
+//        protected Bitmap doInBackground(String... strings) {
+//            try {return Glide.
+//                    with(getApplicationContext()).
+//                    load(strings[0]).
+//                    asBitmap().
+//                    into(100, 100). // Width and height
+//                    get();}
+//            catch (Exception e) {return null;}
+//        }
+//
+//        protected void onProgressUpdate(Void... progress) {}
+//
+//        protected void onPostExecute(Bitmap result) {
+//            imageDetail.setImageBitmap(result);
+//        }
+//    }
 }

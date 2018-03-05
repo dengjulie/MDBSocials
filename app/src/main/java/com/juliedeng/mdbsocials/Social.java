@@ -1,15 +1,7 @@
 package com.juliedeng.mdbsocials;
 
-import android.util.Log;
-
-import com.google.firebase.auth.FirebaseUser;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Model class for each social/event. Details for each social all contained in the class variables.

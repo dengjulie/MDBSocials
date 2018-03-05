@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -14,9 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -93,6 +90,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case (R.id.login_button):
+
                 Utils.attemptLogin(login_email, login_password, mAuth, this);
                 break;
             case (R.id.forgot_password_link):
@@ -103,13 +101,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(i);
                 break;
             case (R.id.background):
-//                test if this does anything
                 login_email.clearFocus();
                 login_password.clearFocus();
                 findViewById(R.id.background).requestFocus();
-                break;
-            case (R.id.login_email):
-
                 break;
             default:
         }

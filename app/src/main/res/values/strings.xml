@@ -21,4 +21,7 @@
     <string name="bad_pw_length">Passwords must be at least 6 characters.</string>
     <string name="pw_match">Passwords do not match.</string>
     <string name="upload_image">Please upload an image.</string>
+    <string name="create_social_loading">Creating social...</string>
+    <string name="login_loading">Logging in...</string>
+    <string name="signup_loading">Signing user up...</string>
 </resources>

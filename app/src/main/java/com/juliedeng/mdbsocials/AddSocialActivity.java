@@ -3,28 +3,20 @@ package com.juliedeng.mdbsocials;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import java.util.Date;
 
 /**
  * Activity page that allows user to input information to add a new social to the list of existing socials.
@@ -40,8 +32,6 @@ public class AddSocialActivity extends AppCompatActivity implements View.OnClick
     private FirebaseDatabase database;
     private DatabaseReference ref;
     private StorageReference storageRef;
-    private static FirebaseAuth mAuth;
-    private static FirebaseUser mUser;
 
     Uri selectedImageUri;
 
@@ -61,9 +51,6 @@ public class AddSocialActivity extends AppCompatActivity implements View.OnClick
         ref = database.getReference(getString(R.string.socials_reference));
         storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(getString(R.string.storage_URL));
         selectedImageUri = null;
-
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
 
         create_button.setOnClickListener(this);
         new_image.setOnClickListener(this);
@@ -87,6 +74,7 @@ public class AddSocialActivity extends AppCompatActivity implements View.OnClick
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == Utils.PICTURE_UPLOAD && resultCode == RESULT_OK) {
+            Log.d("New Social", "Successfully uploaded image from gallery.");
             selectedImageUri = data.getData();
             if (null != selectedImageUri) {
                 new_image.setImageURI(selectedImageUri);

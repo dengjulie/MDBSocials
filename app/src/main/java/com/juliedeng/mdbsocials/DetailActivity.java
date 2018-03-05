@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -118,6 +119,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             interestedRef.runTransaction(new Transaction.Handler() {
                 @Override
                 public Transaction.Result doTransaction(MutableData mutableData) {
+                    Log.d("Interest", "Attempt to Un-RSVP.");
                     interestedEmails.remove(userEmail);
                     ref.child(firebaseKey).child("interestedEmails").setValue(interestedEmails);
                     ref.child(firebaseKey).child("numInterested").setValue(interestedEmails.size());
@@ -126,6 +128,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
                 @Override
                 public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                    Log.d("Interest", "Successfully Un-RSVP'd.");
                     interested.setText("RSVP");
                     interested.setBackgroundColor(getResources().getColor(R.color.darkpink));
                     num_interested.setText(interestedEmails.size() + " interested!");
@@ -136,6 +139,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             interestedRef.runTransaction(new Transaction.Handler() {
                 @Override
                 public Transaction.Result doTransaction(MutableData mutableData) {
+                    Log.d("Interest", "Attempt to RSVP");
                     interestedEmails.add(userEmail);
                     ref.child(firebaseKey).child("interestedEmails").setValue(interestedEmails);
                     ref.child(firebaseKey).child("numInterested").setValue(interestedEmails.size());
@@ -144,6 +148,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
                 @Override
                 public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                    Log.d("Interest", "Successfully RSVP'd");
                     interested.setText("RSVP'd");
                     interested.setBackgroundColor(getResources().getColor(R.color.darkblue));
                     num_interested.setText(interestedEmails.size() + " interested!");
