@@ -17,4 +17,8 @@
     <string name="no_email">Please input an email.</string>
     <string name="email_sent">Email sent.</string>
     <string name="reset_pw_fail">Failed to send. Make sure you have inputted a valid email.</string>
+    <string name="unfilled_fields">Please fill in all fields.</string>
+    <string name="bad_pw_length">Passwords must be at least 6 characters.</string>
+    <string name="pw_match">Passwords do not match.</string>
+    <string name="upload_image">Please upload an image.</string>
 </resources>

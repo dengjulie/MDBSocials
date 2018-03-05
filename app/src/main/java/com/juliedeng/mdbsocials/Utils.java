@@ -39,8 +39,7 @@ import java.util.Date;
  * Class that contains useful functions used repeatedly throughout the application.
  */
 
-//can utils extend appcompatactviity
-public class Utils extends AppCompatActivity {
+public class Utils {
 
     public static final int PICTURE_UPLOAD = 1;
 
@@ -48,24 +47,14 @@ public class Utils extends AppCompatActivity {
         String email = mEmail.getText().toString();
         String password = mPassword.getText().toString();
         String confirmPassword = mConfirmPassword.getText().toString();
-        if (email.length() == 0) {
-            Toast.makeText(signupActivity, "Input an email.",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (password.length() == 0) {
-            Toast.makeText(signupActivity, "Input a password.",
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
         if (password.length() < 6) {
-            Toast.makeText(signupActivity, "Passwords must be at least 6 characters.",
+            Toast.makeText(signupActivity, R.string.bad_pw_length,
                     Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (!password.equals(confirmPassword)) {
-            Toast.makeText(signupActivity, "Passwords do not match.",
+            Toast.makeText(signupActivity, R.string.pw_match,
                     Toast.LENGTH_SHORT).show();
             return;
         }
@@ -83,6 +72,9 @@ public class Utils extends AppCompatActivity {
                             }
                         }
                     });
+        } else {
+            Toast.makeText(signupActivity, R.string.unfilled_fields,
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -95,7 +87,7 @@ public class Utils extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (!task.isSuccessful()) {
-                                Toast.makeText(loginActivity, "Authentication failed.",
+                                Toast.makeText(loginActivity, task.getException().toString(),
                                         Toast.LENGTH_SHORT).show();
                             } else {
                                 loginActivity.getApplication().startActivity(new Intent(loginActivity, MainActivity.class));
@@ -103,7 +95,7 @@ public class Utils extends AppCompatActivity {
                         }
                     });
         } else {
-            Toast.makeText(loginActivity, "All fields must be filled in.",
+            Toast.makeText(loginActivity, R.string.unfilled_fields,
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -111,11 +103,11 @@ public class Utils extends AppCompatActivity {
     public static void submitSocial(final DatabaseReference ref, StorageReference socialsRef, final String key, Uri selectedImageUri, final AddSocialActivity addSocialActivity, EditText mName, EditText mDate, EditText mDescription) {
 
         if (mName.getText().toString().equals("") || mDate.getText().toString().equals("") || mDescription.getText().toString().equals("")) {
-            Toast.makeText(addSocialActivity, "Please fill out all the fields.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(addSocialActivity, R.string.unfilled_fields, Toast.LENGTH_SHORT).show();
             return;
         }
         if (selectedImageUri == null) {
-            Toast.makeText(addSocialActivity, "Please add an image.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(addSocialActivity, R.string.upload_image, Toast.LENGTH_SHORT).show();
             return;
 
         }
@@ -128,7 +120,7 @@ public class Utils extends AppCompatActivity {
         socialsRef.putFile(selectedImageUri).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(addSocialActivity, "Cannot upload file into storage.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(addSocialActivity, R.string.storage_failure, Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -170,27 +162,5 @@ public class Utils extends AppCompatActivity {
             }
         };
         t.start();
-    }
-
-    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, int pixels) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
-                .getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-        final float roundPx = pixels;
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        return output;
     }
 }
